@@ -5,23 +5,45 @@ from reserved import reserved as py_c_keywords
 class Lexer:
     reserved = py_c_keywords
 
+    data_types = {"int": "DTYPE", "double": "DTYPE"}
+
     keywords = {"print": "PRINT", "var": "VAR", "fn": "FN"}
+
+    symbols = {
+        "->": "ARROW",
+        "==": "EQUALS",
+        "!=": "NOTEQUALS",
+        ">=": "GREATEREQUAL",
+        "<=": "SMALLEREQUAL",
+    }
+
+    tokens = (
+        ["NAME", "NUMBER", "STRING", "DTYPE"]
+        + list(keywords.values())
+        + list(symbols.values())
+    )
+
+    t_ARROW = r"->"
+
+    literals = ["=", "+", "-", "*", "/", "(", ")", ",", ";", "{", "}"]
+
+    t_ignore = " \t"
 
     def __init__(self, **kwargs):
         self.lexer = lex.lex(module=self, **kwargs)
 
-    tokens = ["NAME", "NUMBER", "STRING", "DTYPE"] + list(keywords.values())
-
-    literals = ["=", "+", "-", "*", "/", "(", ")", ","]
-
-    t_ignore = " \t"
-
     @lex.TOKEN(r"[a-zA-Z_][a-zA-Z_0-9]*")
     def t_NAME(self, t):
         try:
-            if self.keywords.get(t.value) is not None:
+            if self.data_types.get(t.value) is not None:
+                t.type = self.data_types.get(t.value)
+                # print(t.type)
+                # print(t.value)
+            elif self.keywords.get(t.value) is not None:
                 t.type = self.keywords.get(t.value)
             elif self.reserved.get(t.value) is not None:
+                # print(self.reserved.get(t.value))
+                # print(t.value)
                 raise ValueError(
                     "The token is not a valid identifier or keyword, "
                     "check the list of reserved keywords!"

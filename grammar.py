@@ -16,21 +16,11 @@ class Grammar:
         ("right", "UMINUS"),
     )
 
-    #   fn power(double a, double b) -> double c {
-    #       for x in 1..b { c = c*a }
-    #   }
-
-    #   fn fib(int a) -> int c {
-    #       if (a == 0) return 0
-    #       if (a == 1) return 1
-    #       c = (fib(a-1) + fib(a-2))
-    #   }
-
     identifiers = []
 
     vars = {}
 
-    const = {}
+    consts = {}
 
     def p_body(self, p):
         """body : statement body
@@ -41,8 +31,13 @@ class Grammar:
             p[0] = Node("body", children=[p[1]])
 
     def p_statement_fn_impl(self, p):
-        """statement : FN NAME '(' parameters ')' ARROW DTYPE NAME '{' body '}'"""
-        p[0] = Node("fn", value=p[2], children=[p[2]])
+        """statement : FN NAME '(' parameters ')' ARROW DTYPE NAME '{' body '}'
+        | FN NAME '(' ')' '{' body '}'"""
+        p[0] = Node(
+            "fn",
+            value=p[2],
+            children=[p[4] if len(p) > 10 else Node("parameters", children=[]), p[-2]],
+        )
 
     def p_parameters(self, p):
         """parameters : parameters ',' DTYPE NAME
@@ -136,3 +131,13 @@ class Grammar:
             return self.parser.parse(s, tracking=True, lexer=self.lexer)
         except Exception as e:
             print(e)
+
+    # fn power(double a, double b) -> double c {
+    #     for x in 1..b { c = c*a }
+    # }
+
+    #   fn fib(int a) -> int c {
+    #       if (a == 0) return 0
+    #       if (a == 1) return 1
+    #       c = (fib(a-1) + fib(a-2))
+    #   }

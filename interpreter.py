@@ -1,5 +1,6 @@
 from lexer import Lexer
 from grammar import Grammar
+from node import Node
 
 
 class Interpreter:
@@ -39,6 +40,10 @@ class Interpreter:
             return method(node)
         else:
             raise ValueError(f"Unknown node type: {node.type}")
+
+    def eval_body(self, node):
+        for child in node.children:
+            self.eval(child)
 
     def eval_number(self, node):
         return node.value
@@ -129,6 +134,27 @@ class Interpreter:
 
     def eval_string(self, node):
         return node.value
+
+    def eval_fn(self, node):
+        self.parser.vars[node.value] = node
+
+    def eval_func_call(self, node):
+        func_node = self.parser.vars[node.value]
+        func_params = func_node.children[0]
+        func_body = func_node.children[1]
+        call_params = (
+            node.children[0] if node.children else Node("arguments", children=[])
+        )
+
+        old_vars = self.parser.vars.copy()
+
+        for param, arg in zip(func_params.children, call_params.children):
+            self.parser.vars[param.value] = self.eval(arg)
+
+        retval = self.eval(func_body)
+
+        self.parser.vars = old_vars
+        return retval
 
 
 def main():
