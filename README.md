@@ -1,10 +1,5 @@
 # Trabalho PL
 
-### [Exercicio 1](ex1/)
-
-### [Exercicio 2](ex2/)
-
-
 ## License
 
 Licensed under either of
