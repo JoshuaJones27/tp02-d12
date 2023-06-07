@@ -1,0 +1,405 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> S
+Rule 1     S -> com
+Rule 2     S -> S com
+Rule 3     com -> ESCREVER escreverops
+Rule 4     com -> VAR variavel
+Rule 5     com -> COMENTAR string
+Rule 6     comentar -> string
+Rule 7     escreverops -> string
+Rule 8     escreverops -> contas
+Rule 9     escreverops -> string , escreverops
+Rule 10    escreverops -> contas , escreverops
+Rule 11    contas -> numero * contas
+Rule 12    contas -> numero + contas
+Rule 13    contas -> numero - contas
+Rule 14    contas -> numero / contas
+Rule 15    contas -> numero
+Rule 16    variavel -> string = string
+Rule 17    variavel -> string = numero
+Rule 18    variavel -> string
+
+Terminals, with rules where they appear
+
+*                    : 11
++                    : 12
+,                    : 9 10
+-                    : 13
+/                    : 14
+=                    : 16 17
+COMENTAR             : 5
+ESCREVER             : 3
+VAR                  : 4
+error                : 
+numero               : 11 12 13 14 15 17
+string               : 5 6 7 9 16 16 17 18
+
+Nonterminals, with rules where they appear
+
+S                    : 2 0
+com                  : 1 2
+comentar             : 
+contas               : 8 10 11 12 13 14
+escreverops          : 3 9 10
+variavel             : 4
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . S
+    (1) S -> . com
+    (2) S -> . S com
+    (3) com -> . ESCREVER escreverops
+    (4) com -> . VAR variavel
+    (5) com -> . COMENTAR string
+
+    ESCREVER        shift and go to state 3
+    VAR             shift and go to state 4
+    COMENTAR        shift and go to state 5
+
+    S                              shift and go to state 1
+    com                            shift and go to state 2
+
+state 1
+
+    (0) S' -> S .
+    (2) S -> S . com
+    (3) com -> . ESCREVER escreverops
+    (4) com -> . VAR variavel
+    (5) com -> . COMENTAR string
+
+    ESCREVER        shift and go to state 3
+    VAR             shift and go to state 4
+    COMENTAR        shift and go to state 5
+
+    com                            shift and go to state 6
+
+state 2
+
+    (1) S -> com .
+
+    ESCREVER        reduce using rule 1 (S -> com .)
+    VAR             reduce using rule 1 (S -> com .)
+    COMENTAR        reduce using rule 1 (S -> com .)
+    $end            reduce using rule 1 (S -> com .)
+
+
+state 3
+
+    (3) com -> ESCREVER . escreverops
+    (7) escreverops -> . string
+    (8) escreverops -> . contas
+    (9) escreverops -> . string , escreverops
+    (10) escreverops -> . contas , escreverops
+    (11) contas -> . numero * contas
+    (12) contas -> . numero + contas
+    (13) contas -> . numero - contas
+    (14) contas -> . numero / contas
+    (15) contas -> . numero
+
+    string          shift and go to state 8
+    numero          shift and go to state 10
+
+    escreverops                    shift and go to state 7
+    contas                         shift and go to state 9
+
+state 4
+
+    (4) com -> VAR . variavel
+    (16) variavel -> . string = string
+    (17) variavel -> . string = numero
+    (18) variavel -> . string
+
+    string          shift and go to state 12
+
+    variavel                       shift and go to state 11
+
+state 5
+
+    (5) com -> COMENTAR . string
+
+    string          shift and go to state 13
+
+
+state 6
+
+    (2) S -> S com .
+
+    ESCREVER        reduce using rule 2 (S -> S com .)
+    VAR             reduce using rule 2 (S -> S com .)
+    COMENTAR        reduce using rule 2 (S -> S com .)
+    $end            reduce using rule 2 (S -> S com .)
+
+
+state 7
+
+    (3) com -> ESCREVER escreverops .
+
+    ESCREVER        reduce using rule 3 (com -> ESCREVER escreverops .)
+    VAR             reduce using rule 3 (com -> ESCREVER escreverops .)
+    COMENTAR        reduce using rule 3 (com -> ESCREVER escreverops .)
+    $end            reduce using rule 3 (com -> ESCREVER escreverops .)
+
+
+state 8
+
+    (7) escreverops -> string .
+    (9) escreverops -> string . , escreverops
+
+    ESCREVER        reduce using rule 7 (escreverops -> string .)
+    VAR             reduce using rule 7 (escreverops -> string .)
+    COMENTAR        reduce using rule 7 (escreverops -> string .)
+    $end            reduce using rule 7 (escreverops -> string .)
+    ,               shift and go to state 14
+
+
+state 9
+
+    (8) escreverops -> contas .
+    (10) escreverops -> contas . , escreverops
+
+    ESCREVER        reduce using rule 8 (escreverops -> contas .)
+    VAR             reduce using rule 8 (escreverops -> contas .)
+    COMENTAR        reduce using rule 8 (escreverops -> contas .)
+    $end            reduce using rule 8 (escreverops -> contas .)
+    ,               shift and go to state 15
+
+
+state 10
+
+    (11) contas -> numero . * contas
+    (12) contas -> numero . + contas
+    (13) contas -> numero . - contas
+    (14) contas -> numero . / contas
+    (15) contas -> numero .
+
+    *               shift and go to state 16
+    +               shift and go to state 17
+    -               shift and go to state 18
+    /               shift and go to state 19
+    ,               reduce using rule 15 (contas -> numero .)
+    ESCREVER        reduce using rule 15 (contas -> numero .)
+    VAR             reduce using rule 15 (contas -> numero .)
+    COMENTAR        reduce using rule 15 (contas -> numero .)
+    $end            reduce using rule 15 (contas -> numero .)
+
+
+state 11
+
+    (4) com -> VAR variavel .
+
+    ESCREVER        reduce using rule 4 (com -> VAR variavel .)
+    VAR             reduce using rule 4 (com -> VAR variavel .)
+    COMENTAR        reduce using rule 4 (com -> VAR variavel .)
+    $end            reduce using rule 4 (com -> VAR variavel .)
+
+
+state 12
+
+    (16) variavel -> string . = string
+    (17) variavel -> string . = numero
+    (18) variavel -> string .
+
+    =               shift and go to state 20
+    ESCREVER        reduce using rule 18 (variavel -> string .)
+    VAR             reduce using rule 18 (variavel -> string .)
+    COMENTAR        reduce using rule 18 (variavel -> string .)
+    $end            reduce using rule 18 (variavel -> string .)
+
+
+state 13
+
+    (5) com -> COMENTAR string .
+
+    ESCREVER        reduce using rule 5 (com -> COMENTAR string .)
+    VAR             reduce using rule 5 (com -> COMENTAR string .)
+    COMENTAR        reduce using rule 5 (com -> COMENTAR string .)
+    $end            reduce using rule 5 (com -> COMENTAR string .)
+
+
+state 14
+
+    (9) escreverops -> string , . escreverops
+    (7) escreverops -> . string
+    (8) escreverops -> . contas
+    (9) escreverops -> . string , escreverops
+    (10) escreverops -> . contas , escreverops
+    (11) contas -> . numero * contas
+    (12) contas -> . numero + contas
+    (13) contas -> . numero - contas
+    (14) contas -> . numero / contas
+    (15) contas -> . numero
+
+    string          shift and go to state 8
+    numero          shift and go to state 10
+
+    escreverops                    shift and go to state 21
+    contas                         shift and go to state 9
+
+state 15
+
+    (10) escreverops -> contas , . escreverops
+    (7) escreverops -> . string
+    (8) escreverops -> . contas
+    (9) escreverops -> . string , escreverops
+    (10) escreverops -> . contas , escreverops
+    (11) contas -> . numero * contas
+    (12) contas -> . numero + contas
+    (13) contas -> . numero - contas
+    (14) contas -> . numero / contas
+    (15) contas -> . numero
+
+    string          shift and go to state 8
+    numero          shift and go to state 10
+
+    contas                         shift and go to state 9
+    escreverops                    shift and go to state 22
+
+state 16
+
+    (11) contas -> numero * . contas
+    (11) contas -> . numero * contas
+    (12) contas -> . numero + contas
+    (13) contas -> . numero - contas
+    (14) contas -> . numero / contas
+    (15) contas -> . numero
+
+    numero          shift and go to state 10
+
+    contas                         shift and go to state 23
+
+state 17
+
+    (12) contas -> numero + . contas
+    (11) contas -> . numero * contas
+    (12) contas -> . numero + contas
+    (13) contas -> . numero - contas
+    (14) contas -> . numero / contas
+    (15) contas -> . numero
+
+    numero          shift and go to state 10
+
+    contas                         shift and go to state 24
+
+state 18
+
+    (13) contas -> numero - . contas
+    (11) contas -> . numero * contas
+    (12) contas -> . numero + contas
+    (13) contas -> . numero - contas
+    (14) contas -> . numero / contas
+    (15) contas -> . numero
+
+    numero          shift and go to state 10
+
+    contas                         shift and go to state 25
+
+state 19
+
+    (14) contas -> numero / . contas
+    (11) contas -> . numero * contas
+    (12) contas -> . numero + contas
+    (13) contas -> . numero - contas
+    (14) contas -> . numero / contas
+    (15) contas -> . numero
+
+    numero          shift and go to state 10
+
+    contas                         shift and go to state 26
+
+state 20
+
+    (16) variavel -> string = . string
+    (17) variavel -> string = . numero
+
+    string          shift and go to state 27
+    numero          shift and go to state 28
+
+
+state 21
+
+    (9) escreverops -> string , escreverops .
+
+    ESCREVER        reduce using rule 9 (escreverops -> string , escreverops .)
+    VAR             reduce using rule 9 (escreverops -> string , escreverops .)
+    COMENTAR        reduce using rule 9 (escreverops -> string , escreverops .)
+    $end            reduce using rule 9 (escreverops -> string , escreverops .)
+
+
+state 22
+
+    (10) escreverops -> contas , escreverops .
+
+    ESCREVER        reduce using rule 10 (escreverops -> contas , escreverops .)
+    VAR             reduce using rule 10 (escreverops -> contas , escreverops .)
+    COMENTAR        reduce using rule 10 (escreverops -> contas , escreverops .)
+    $end            reduce using rule 10 (escreverops -> contas , escreverops .)
+
+
+state 23
+
+    (11) contas -> numero * contas .
+
+    ,               reduce using rule 11 (contas -> numero * contas .)
+    ESCREVER        reduce using rule 11 (contas -> numero * contas .)
+    VAR             reduce using rule 11 (contas -> numero * contas .)
+    COMENTAR        reduce using rule 11 (contas -> numero * contas .)
+    $end            reduce using rule 11 (contas -> numero * contas .)
+
+
+state 24
+
+    (12) contas -> numero + contas .
+
+    ,               reduce using rule 12 (contas -> numero + contas .)
+    ESCREVER        reduce using rule 12 (contas -> numero + contas .)
+    VAR             reduce using rule 12 (contas -> numero + contas .)
+    COMENTAR        reduce using rule 12 (contas -> numero + contas .)
+    $end            reduce using rule 12 (contas -> numero + contas .)
+
+
+state 25
+
+    (13) contas -> numero - contas .
+
+    ,               reduce using rule 13 (contas -> numero - contas .)
+    ESCREVER        reduce using rule 13 (contas -> numero - contas .)
+    VAR             reduce using rule 13 (contas -> numero - contas .)
+    COMENTAR        reduce using rule 13 (contas -> numero - contas .)
+    $end            reduce using rule 13 (contas -> numero - contas .)
+
+
+state 26
+
+    (14) contas -> numero / contas .
+
+    ,               reduce using rule 14 (contas -> numero / contas .)
+    ESCREVER        reduce using rule 14 (contas -> numero / contas .)
+    VAR             reduce using rule 14 (contas -> numero / contas .)
+    COMENTAR        reduce using rule 14 (contas -> numero / contas .)
+    $end            reduce using rule 14 (contas -> numero / contas .)
+
+
+state 27
+
+    (16) variavel -> string = string .
+
+    ESCREVER        reduce using rule 16 (variavel -> string = string .)
+    VAR             reduce using rule 16 (variavel -> string = string .)
+    COMENTAR        reduce using rule 16 (variavel -> string = string .)
+    $end            reduce using rule 16 (variavel -> string = string .)
+
+
+state 28
+
+    (17) variavel -> string = numero .
+
+    ESCREVER        reduce using rule 17 (variavel -> string = numero .)
+    VAR             reduce using rule 17 (variavel -> string = numero .)
+    COMENTAR        reduce using rule 17 (variavel -> string = numero .)
+    $end            reduce using rule 17 (variavel -> string = numero .)
+
